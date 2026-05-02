@@ -40,16 +40,134 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState(productosData);
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // URL de exportacion de tu Google Sheet
+  const SHEET_URL = "https://docs.google.com/spreadsheets/d/1sjbz-05RYBWb-eN0a5NKckaMihjfWQRnfB9fIlAHex4/export?format=csv";
 
   useEffect(() => {
-    const results = productosData.filter(p =>
+    const fetchData = async () => {
+      try {
+        const response = await fetch(SHEET_URL);
+        const csvText = await response.text();
+        
+        // Parser mejorado para manejar espacios y comas dentro de comillas
+        const rows = csvText.split('\n').map(row => {
+          const result = [];
+          let current = '';
+          let inQuotes = false;
+          for (let char of row) {
+            if (char === '"') inQuotes = !inQuotes;
+            else if (char === ',' && !inQuotes) {
+              result.push(current.trim());
+              current = '';
+            } else {
+              current += char;
+            }
+          }
+          result.push(current.trim());
+          return result;
+        }).filter(row => row.length >= 10);
+
+        // Encontrar los indices de las columnas dinamicamente
+        const header = rows.find(r => r.includes('PRODUCTO'));
+        const stockIdx = header.findIndex(h => h.includes('STOCK'));
+        const nameIdx = header.findIndex(h => h.includes('PRODUCTO'));
+        const brandIdx = header.findIndex(h => h.includes('MARCA'));
+        const colorIdx = header.findIndex(h => h.includes('COLOR'));
+        const descIdx = header.findIndex(h => h.includes('DESCRIPCION'));
+        const priceIdx = header.findIndex(h => h.includes('PRECIO'));
+        const sizeIdx = header.findIndex(h => h.includes('MEDIDA MX'));
+
+        const dataRows = rows.slice(rows.indexOf(header) + 1);
+
+        const parsedProducts = dataRows.map((row, idx) => {
+          if (row.length < 5) return null;
+          const product = {
+            id: idx,
+            stock: parseInt(row[stockIdx]) || 0,
+            nombre: `${row[nameIdx]} ${row[brandIdx]}`.trim(),
+            marca: row[brandIdx] || '',
+            color: row[colorIdx] || '',
+            descripcion: row[descIdx] || '',
+            talla: row[sizeIdx] || '',
+            precio: row[priceIdx] ? row[priceIdx].split('.')[0].replace(/[^0-9]/g, '') : '0',
+            imagen: 'undefined'
+          };
+
+          const fullUpper = (product.nombre + ' ' + product.descripcion).toUpperCase();
+          const colorUpper = (product.color || '').toUpperCase();
+          const descUpper = (product.descripcion || '').toUpperCase();
+
+          // BLINDAJE DE FOTOS (Ruta absoluta para el navegador)
+          if (fullUpper.includes('SPYDER')) {
+            if (descUpper.includes('SIN MANGA')) product.imagen = '/productos/PROMO_PLAYERAS_SPYDER_TANK_TOPS_PACK_4.png';
+            else if (colorUpper.includes('GUIDA') || colorUpper.includes('GUINDA')) product.imagen = '/productos/PROMO_PLAYERAS_SPYDER_PACK_3.png';
+            else product.imagen = '/productos/PROMO_PLAYERAS_SPYDER_PACK.png';
+          } else if (fullUpper.includes('LEVIS')) {
+            if (descUpper.includes('TRIFOLD')) product.imagen = '/productos/PROMO_CARTERA_LEVIS_TRIFOLD_CAFE.png';
+            else if (colorUpper.includes('CAF')) product.imagen = '/productos/PROMO_CARTERA_LEVIS_CAFE_8MX.png';
+            else product.imagen = '/productos/PROMO_CARTERA_LEVIS_BIFOLD_NEGRA.png';
+          } else if (fullUpper.includes('HURLEY')) {
+            if (descUpper.includes('TRIFOLD') || colorUpper.includes('CAF')) product.imagen = '/productos/PROMO_CARTERA_HURLEY_TRIFOLD_CAFE.png';
+            else product.imagen = '/productos/PROMO_CARTERA_HURLEY_BIFOLD_GRIS.png';
+          } else if (fullUpper.includes('TIMBERLAND')) {
+            if (colorUpper.includes('CAF')) product.imagen = '/productos/PROMO_CARTERA_TIMBERLAND_CAFE_8MX.png';
+            else product.imagen = '/productos/PROMO_CARTERA_TIMBERLAND_NEGRA.png';
+          } else if (fullUpper.includes('COLUMBIA')) {
+            product.imagen = '/productos/PROMO_CARTERA_COLUMBIA_NEGRO_CAFE_8MX.png';
+          } else if (fullUpper.includes('BLUEY')) {
+             if (fullUpper.includes('MANTA')) product.imagen = '/productos/PROMO_MANTA_BLUEY.png';
+             else if (fullUpper.includes('PANTUNFLAS')) {
+                if (colorUpper.includes('MORADO')) product.imagen = '/productos/PROMO_BLUEY_BINGO_PRO.png';
+                else product.imagen = '/productos/PROMO_BLUEY_3D_AZUL_PRO.png';
+             } else product.imagen = '/productos/PROMO_CALCETINES_BLUEY_PRO.png';
+          } else if (fullUpper.includes('TRUE RELIGION')) {
+            if (colorUpper.includes('NEGRO')) product.imagen = '/productos/PROMO_NECESER_TRUE_RELIGION_NEGRO.png';
+            else product.imagen = '/productos/PROMO_NECESER_TRUE_RELIGION.png';
+          } else if (fullUpper.includes('SALT LIFE')) {
+            if (colorUpper.includes('AZUL')) product.imagen = '/productos/PROMO_SALT_LIFE_AZUL.png';
+            else if (colorUpper.includes('GRIS')) product.imagen = '/productos/PROMO_NECESER_SALT_LIFE_GRIS.png';
+            else product.imagen = '/productos/PROMO_SALT_LIFE_NEGRA.png';
+          } else if (fullUpper.includes('SKECK') || fullUpper.includes('SKECH')) product.imagen = '/productos/PROMO_SKECHERS_PACK.png';
+          else if (fullUpper.includes('WICKED')) product.imagen = '/productos/PROMO_ESTUCHE_WICKED.png';
+          else if (fullUpper.includes('QUICK')) product.imagen = '/productos/PROMO_SANDALIAS_QUIKSILVER_AZUL_7MX.png';
+          else if (fullUpper.includes('TOMMY')) product.imagen = '/productos/PROMO_SANDALIAS_TOMMY_COGNAC_8MX.png';
+          else if (fullUpper.includes('NAUTICA')) product.imagen = '/productos/PROMO_SANDALIAS_NAUTICA_OLIVO_8MX.png';
+          else if (fullUpper.includes('DOCKERS')) product.imagen = '/productos/PROMO_SANDALIAS_DOCKERS_OLIVO.png';
+          else if (fullUpper.includes('GUESS')) {
+            if (descUpper.includes('CROSSBODY')) product.imagen = '/productos/PROMO_GUESS_CROSSBODY_FINAL.png';
+            else product.imagen = '/productos/PROMO_SANDALIAS_GUESS_FINAL.png';
+          } else if (fullUpper.includes('CLIFFS')) product.imagen = '/productos/PROMO_SANDALIAS_CLIFFS_CAFE_8MX.png';
+          else if (fullUpper.includes('JOHN DEERE')) product.imagen = '/productos/PROMO_NECESER_JOHN_DEERE.png';
+          else if (fullUpper.includes('REEBOK')) product.imagen = '/productos/PROMO_NECESER_REEBOK.png';
+          else if (fullUpper.includes('PENGUIN')) product.imagen = '/productos/PROMO_NECESER_PENGUIN.png';
+          else if (fullUpper.includes('CHAMPION')) product.imagen = '/productos/PROMO_NECESER_CHAMPION.png';
+
+          return product;
+        }).filter(p => p && p.nombre !== '' && p.nombre !== 'undefined undefined');
+
+        setProducts(parsedProducts);
+        setFilteredProducts(parsedProducts);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error cargando inventario:", err);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const results = products.filter(p =>
       p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.categoria.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredProducts(results);
-  }, [searchTerm]);
+  }, [searchTerm, products]);
 
   const addToCart = (product) => {
     setCart([...cart, product]);
@@ -60,7 +178,7 @@ function App() {
   };
 
   const sendWhatsApp = () => {
-    const phone = "529990000000"; // Aqui pondremos tu numero despues
+    const phone = "526121022459"; // Numero de Genoveva Store
     const items = cart.map(p => `- ${p.nombre} ($${p.precio})`).join('\n');
     const total = cart.reduce((acc, p) => acc + parseFloat(p.precio), 0);
     const message = `¡Hola Genoveva Store! 🌟 Me interesan estos productos:\n\n${items}\n\nTotal estimado: $${total}\n\n¿Están disponibles?`;
@@ -197,9 +315,9 @@ function App() {
                   marginBottom: '20px'
                 }}>
                   <p style={{ fontSize: '0.8rem', color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '5px' }}>DATOS DE DEPÓSITO:</p>
-                  <p style={{ fontSize: '0.9rem' }}>BANCO: [Nombre del Banco]</p>
-                  <p style={{ fontSize: '0.9rem' }}>CUENTA: [Tu Numero de Cuenta]</p>
-                  <p style={{ fontSize: '0.9rem' }}>CLABE: [Tu Numero Clabe]</p>
+                  <p style={{ fontSize: '0.9rem' }}>BANCO: BBVA</p>
+                  <p style={{ fontSize: '0.9rem' }}>TARJETA: 4152 3144 9674 0245</p>
+                  <p style={{ fontSize: '0.9rem' }}>NOMBRE: MARIA ANABEL MORENO</p>
                   <p style={{ fontSize: '0.7rem', marginTop: '10px', fontStyle: 'italic' }}>* Envía tu comprobante por WhatsApp al finalizar.</p>
                 </div>
                 <button className="whatsapp-btn" onClick={sendWhatsApp}>
