@@ -101,50 +101,51 @@ function App() {
           const colorUpper = (product.color || '').toUpperCase();
           const descUpper = (product.descripcion || '').toUpperCase();
 
-          // BLINDAJE DE FOTOS (Ruta absoluta para el navegador)
+          // BLINDAJE DE FOTOS (Ruta absoluta para Vercel)
           if (fullUpper.includes('SPYDER')) {
-            if (descUpper.includes('SIN MANGA')) product.imagen = '/productos/PROMO_PLAYERAS_SPYDER_TANK_TOPS_PACK_4.png';
-            else if (colorUpper.includes('GUIDA') || colorUpper.includes('GUINDA')) product.imagen = '/productos/PROMO_PLAYERAS_SPYDER_PACK_3.png';
-            else product.imagen = '/productos/PROMO_PLAYERAS_SPYDER_PACK.png';
+            if (descUpper.includes('SIN MANGA')) product.imagen = 'PROMO_PLAYERAS_SPYDER_TANK_TOPS_PACK_4.png';
+            else if (colorUpper.includes('GUIDA') || colorUpper.includes('GUINDA')) product.imagen = 'PROMO_PLAYERAS_SPYDER_PACK_3.png';
+            else product.imagen = 'PROMO_PLAYERAS_SPYDER_PACK.png';
           } else if (fullUpper.includes('LEVIS')) {
-            if (descUpper.includes('TRIFOLD')) product.imagen = '/productos/PROMO_CARTERA_LEVIS_TRIFOLD_CAFE.png';
-            else if (colorUpper.includes('CAF')) product.imagen = '/productos/PROMO_CARTERA_LEVIS_CAFE_8MX.png';
-            else product.imagen = '/productos/PROMO_CARTERA_LEVIS_BIFOLD_NEGRA.png';
+            if (descUpper.includes('TRIFOLD')) product.imagen = 'PROMO_CARTERA_LEVIS_TRIFOLD_CAFE.png';
+            else if (colorUpper.includes('CAF')) product.imagen = 'PROMO_CARTERA_LEVIS_CAFE_8MX.png';
+            else product.imagen = 'PROMO_CARTERA_LEVIS_BIFOLD_NEGRA.png';
           } else if (fullUpper.includes('HURLEY')) {
-            if (descUpper.includes('TRIFOLD') || colorUpper.includes('CAF')) product.imagen = '/productos/PROMO_CARTERA_HURLEY_TRIFOLD_CAFE.png';
-            else product.imagen = '/productos/PROMO_CARTERA_HURLEY_BIFOLD_GRIS.png';
+            if (descUpper.includes('TRIFOLD') || colorUpper.includes('CAF')) product.imagen = 'PROMO_CARTERA_HURLEY_TRIFOLD_CAFE.png';
+            else product.imagen = 'PROMO_CARTERA_HURLEY_BIFOLD_GRIS.png';
           } else if (fullUpper.includes('TIMBERLAND')) {
-            if (colorUpper.includes('CAF')) product.imagen = '/productos/PROMO_CARTERA_TIMBERLAND_CAFE_8MX.png';
-            else product.imagen = '/productos/PROMO_CARTERA_TIMBERLAND_NEGRA.png';
+            if (colorUpper.includes('CAF')) product.imagen = 'PROMO_CARTERA_TIMBERLAND_CAFE_8MX.png';
+            else product.imagen = 'PROMO_CARTERA_TIMBERLAND_NEGRA.png';
           } else if (fullUpper.includes('COLUMBIA')) {
-            product.imagen = '/productos/PROMO_CARTERA_COLUMBIA_NEGRO_CAFE_8MX.png';
+            product.imagen = 'PROMO_CARTERA_COLUMBIA_NEGRO_CAFE_8MX.png';
           } else if (fullUpper.includes('BLUEY')) {
-             if (fullUpper.includes('MANTA')) product.imagen = '/productos/PROMO_MANTA_BLUEY.png';
+             if (fullUpper.includes('MANTA')) product.imagen = 'PROMO_MANTA_BLUEY.png';
              else if (fullUpper.includes('PANTUNFLAS')) {
-                if (colorUpper.includes('MORADO')) product.imagen = '/productos/PROMO_BLUEY_BINGO_PRO.png';
-                else product.imagen = '/productos/PROMO_BLUEY_3D_AZUL_PRO.png';
-             } else product.imagen = '/productos/PROMO_CALCETINES_BLUEY_PRO.png';
+                if (colorUpper.includes('MORADO')) product.imagen = 'PROMO_BLUEY_BINGO_PRO.png';
+                else product.imagen = 'PROMO_BLUEY_3D_AZUL_PRO.png';
+             } else product.imagen = 'PROMO_CALCETINES_BLUEY_PRO.png';
           } else if (fullUpper.includes('TRUE RELIGION')) {
-            if (colorUpper.includes('NEGRO')) product.imagen = '/productos/PROMO_NECESER_TRUE_RELIGION_NEGRO.png';
-            else product.imagen = '/productos/PROMO_NECESER_TRUE_RELIGION.png';
+            if (colorUpper.includes('NEGRO')) product.imagen = 'PROMO_NECESER_TRUE_RELIGION_NEGRO.png';
+            else product.imagen = 'PROMO_NECESER_TRUE_RELIGION.png';
           } else if (fullUpper.includes('SALT LIFE')) {
-            if (colorUpper.includes('AZUL')) product.imagen = '/productos/PROMO_SALT_LIFE_AZUL.png';
-            else if (colorUpper.includes('GRIS')) product.imagen = '/productos/PROMO_NECESER_SALT_LIFE_GRIS.png';
-            else product.imagen = '/productos/PROMO_SALT_LIFE_NEGRA.png';
-          } else if (fullUpper.includes('SKECK') || fullUpper.includes('SKECH')) product.imagen = '/productos/PROMO_SKECHERS_PACK.png';
-          else if (fullUpper.includes('WICKED')) product.imagen = '/productos/PROMO_ESTUCHE_WICKED.png';
-          else if (fullUpper.includes('QUICK')) product.imagen = '/productos/PROMO_SANDALIAS_QUIKSILVER_AZUL_7MX.png';
-          else if (fullUpper.includes('TOMMY')) product.imagen = '/productos/PROMO_SANDALIAS_TOMMY_COGNAC_8MX.png';
-          else if (fullUpper.includes('NAUTICA')) product.imagen = '/productos/PROMO_SANDALIAS_NAUTICA_OLIVO_8MX.png';
-          else if (fullUpper.includes('DOCKERS')) product.imagen = '/productos/PROMO_SANDALIAS_DOCKERS_OLIVO.png';
+            if (colorUpper.includes('AZUL')) product.imagen = 'PROMO_SALT_LIFE_AZUL.png';
+            else if (colorUpper.includes('GRIS')) product.imagen = 'PROMO_NECESER_SALT_LIFE_GRIS.png';
+            else if (colorUpper.includes('NEGRA') || colorUpper.includes('NEGRO')) product.imagen = 'PROMO_SALT_LIFE_NEGRA.png';
+            else product.imagen = 'PROMO_SALT_LIFE_FINAL.png';
+          } else if (fullUpper.includes('SKECK') || fullUpper.includes('SKECH')) product.imagen = 'PROMO_SKECHERS_PACK.png';
+          else if (fullUpper.includes('WICKED')) product.imagen = 'PROMO_ESTUCHE_WICKED.png';
+          else if (fullUpper.includes('QUICK')) product.imagen = 'PROMO_SANDALIAS_QUIKSILVER_AZUL_7MX.png';
+          else if (fullUpper.includes('TOMMY')) product.imagen = 'PROMO_SANDALIAS_TOMMY_COGNAC_8MX.png';
+          else if (fullUpper.includes('NAUTICA')) product.imagen = 'PROMO_SANDALIAS_NAUTICA_OLIVO_8MX.png';
+          else if (fullUpper.includes('DOCKERS')) product.imagen = 'PROMO_SANDALIAS_DOCKERS_OLIVO.png';
           else if (fullUpper.includes('GUESS')) {
-            if (descUpper.includes('CROSSBODY')) product.imagen = '/productos/PROMO_GUESS_CROSSBODY_FINAL.png';
-            else product.imagen = '/productos/PROMO_SANDALIAS_GUESS_FINAL.png';
-          } else if (fullUpper.includes('CLIFFS')) product.imagen = '/productos/PROMO_SANDALIAS_CLIFFS_CAFE_8MX.png';
-          else if (fullUpper.includes('JOHN DEERE')) product.imagen = '/productos/PROMO_NECESER_JOHN_DEERE.png';
-          else if (fullUpper.includes('REEBOK')) product.imagen = '/productos/PROMO_NECESER_REEBOK.png';
-          else if (fullUpper.includes('PENGUIN')) product.imagen = '/productos/PROMO_NECESER_PENGUIN.png';
-          else if (fullUpper.includes('CHAMPION')) product.imagen = '/productos/PROMO_NECESER_CHAMPION.png';
+            if (descUpper.includes('CROSSBODY')) product.imagen = 'PROMO_GUESS_CROSSBODY_FINAL.png';
+            else product.imagen = 'PROMO_SANDALIAS_GUESS_FINAL.png';
+          } else if (fullUpper.includes('CLIFFS')) product.imagen = 'PROMO_SANDALIAS_CLIFFS_CAFE_8MX.png';
+          else if (fullUpper.includes('JOHN DEERE')) product.imagen = 'PROMO_NECESER_JOHN_DEERE.png';
+          else if (fullUpper.includes('REEBOK')) product.imagen = 'PROMO_NECESER_REEBOK.png';
+          else if (fullUpper.includes('PENGUIN')) product.imagen = 'PROMO_NECESER_PENGUIN.png';
+          else if (fullUpper.includes('CHAMPION')) product.imagen = 'PROMO_NECESER_CHAMPION.png';
 
           return product;
         }).filter(p => p && p.nombre !== '' && p.nombre !== 'undefined undefined');
