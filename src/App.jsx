@@ -325,6 +325,9 @@ function App() {
                   <p style={{ fontSize: '0.9rem' }}>NOMBRE: MARIA ANABEL MORENO</p>
                   <p style={{ fontSize: '0.7rem', marginTop: '10px', fontStyle: 'italic' }}>* Envía tu comprobante por WhatsApp al finalizar.</p>
                 </div>
+                <div style={{ color: '#ff4444', fontSize: '0.65rem', textAlign: 'center', marginBottom: '10px', fontWeight: 'bold', letterSpacing: '0.5px' }}>
+                  ⚠️ EL STOCK NO SE RESERVA HASTA CONFIRMAR EL PAGO
+                </div>
                 <button className="whatsapp-btn" onClick={sendWhatsApp}>
                    <MessageCircle size={20} /> Enviar Pedido por WhatsApp
                 </button>
