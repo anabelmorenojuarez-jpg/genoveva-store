@@ -103,9 +103,13 @@ function App() {
 
           // BLINDAJE DE FOTOS (Ruta absoluta para Vercel)
           if (fullUpper.includes('SPYDER')) {
-            if (descUpper.includes('SIN MANGA')) product.imagen = 'PROMO_PLAYERAS_SPYDER_TANK_TOPS_PACK_4.png';
-            else if (colorUpper.includes('GUIDA') || colorUpper.includes('GUINDA')) product.imagen = 'PROMO_PLAYERAS_SPYDER_PACK_3.png';
-            else product.imagen = 'PROMO_PLAYERAS_SPYDER_PACK.png';
+            if (fullUpper.includes('A SHIRT') || descUpper.includes('SIN MANGA')) {
+              product.imagen = 'PROMO_PLAYERAS_SPYDER_TANK_TOPS_PACK_4.png';
+            } else if (colorUpper.includes('GUIDA') || colorUpper.includes('GUINDA')) {
+              product.imagen = 'PROMO_PLAYERAS_SPYDER_PACK_3.png';
+            } else {
+              product.imagen = 'PROMO_PLAYERAS_SPYDER_PACK.png';
+            }
           } else if (fullUpper.includes('LEVIS')) {
             if (descUpper.includes('TRIFOLD')) product.imagen = 'PROMO_CARTERA_LEVIS_TRIFOLD_CAFE.png';
             else if (colorUpper.includes('CAF')) product.imagen = 'PROMO_CARTERA_LEVIS_CAFE_8MX.png';
