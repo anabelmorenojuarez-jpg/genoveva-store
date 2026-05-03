@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ShoppingBag, X, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import productosData from './productos.json';
+import { Analytics } from '@vercel/analytics/react';
 
 const ProductImage = ({ src, alt }) => {
   const [error, setError] = useState(false);
@@ -336,6 +336,7 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
+      <Analytics />
     </div>
   );
 }
