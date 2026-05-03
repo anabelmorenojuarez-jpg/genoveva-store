@@ -205,7 +205,7 @@ function App() {
         >
           Genoveva Store
         </motion.h1>
-        <p className="subtitle">Luxury Accessories & Footwear</p>
+        <p className="subtitle">Accesorios & Calzado Original</p>
       </header>
 
       <div className="search-container">
