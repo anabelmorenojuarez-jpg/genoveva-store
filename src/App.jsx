@@ -166,11 +166,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const results = products.filter(p =>
-      p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.categoria.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const term = searchTerm.toLowerCase();
+    const results = products.filter(p => {
+      const nombre = (p.nombre || '').toLowerCase();
+      const marca = (p.marca || '').toLowerCase();
+      const descripcion = (p.descripcion || '').toLowerCase();
+      
+      return nombre.includes(term) || 
+             marca.includes(term) || 
+             descripcion.includes(term);
+    });
     setFilteredProducts(results);
   }, [searchTerm, products]);
 
