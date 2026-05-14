@@ -146,10 +146,46 @@ header {
   margin-bottom: 15px;
 }
 
+.price-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .price {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.price-original {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+.discount-tag {
+  background: #ff4444;
   color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 800;
+  width: fit-content;
+  margin-bottom: 4px;
+}
+
+.immediate-delivery {
+  font-size: 0.65rem;
+  color: var(--accent-color);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+  background: rgba(197, 160, 89, 0.1);
+  padding: 2px 5px;
+  border-radius: 4px;
+  display: inline-block;
 }
 
 .add-btn {

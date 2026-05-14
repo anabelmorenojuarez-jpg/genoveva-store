@@ -45,7 +45,8 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   // URL de exportacion de tu Google Sheet
-  const SHEET_URL = "https://docs.google.com/spreadsheets/d/1sjbz-05RYBWb-eN0a5NKckaMihjfWQRnfB9fIlAHex4/export?format=csv";
+  // URL de exportacion de tu Google Sheet (con cache buster para asegurar datos frescos)
+  const SHEET_URL = `https://docs.google.com/spreadsheets/d/1sjbz-05RYBWb-eN0a5NKckaMihjfWQRnfB9fIlAHex4/export?format=csv&t=${new Date().getTime()}`;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,6 +101,21 @@ function App() {
           const fullUpper = (product.nombre + ' ' + product.descripcion).toUpperCase();
           const colorUpper = (product.color || '').toUpperCase();
           const descUpper = (product.descripcion || '').toUpperCase();
+
+          // Lógica de Descuentos (20% a todo menos chanclas, carteras y playeras)
+          // Normalizamos el texto para búsqueda (Nombre + Descripción)
+          const searchData = `${product.nombre} ${product.descripcion}`.toUpperCase();
+          const excludedKeywords = ['SANDALIA', 'CHANCL', 'CARTERA', 'PLAYERA', 'SHIRT', 'TANK TOP'];
+          const isExcluded = excludedKeywords.some(k => searchData.includes(k));
+          
+          if (!isExcluded && parseInt(product.precio) > 0) {
+            product.precioOriginal = product.precio;
+            // Aplicar 20% de descuento y redondear
+            const originalPrice = parseInt(product.precio);
+            const discountedPrice = Math.floor(originalPrice * 0.8);
+            product.precio = discountedPrice.toString();
+            product.hasDiscount = true;
+          }
 
           // BLINDAJE DE FOTOS (Ruta absoluta para Vercel)
           if (fullUpper.includes('SPYDER')) {
@@ -206,6 +222,19 @@ function App() {
           Genoveva Store
         </motion.h1>
         <p className="subtitle">Accesorios & Calzado Original</p>
+        <div style={{ 
+          marginTop: '15px', 
+          background: 'var(--accent-color)', 
+          color: 'black', 
+          display: 'inline-block', 
+          padding: '5px 15px', 
+          borderRadius: '20px', 
+          fontWeight: 'bold',
+          fontSize: '0.8rem',
+          letterSpacing: '1px'
+        }}>
+          🔥 ¡OFERTAS DE MAYO: 20% OFF EN SELECCIONADOS! 🔥
+        </div>
       </header>
 
       <div className="search-container">
@@ -239,16 +268,29 @@ function App() {
                   {product.talla && `Talla: ${product.talla} MX | `}
                   {product.color}
                 </p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
-                  <p className="price">${product.precio}</p>
-                  <p style={{ 
-                    fontSize: '0.7rem', 
-                    color: product.stock > 0 ? 'var(--accent-color)' : '#ff4444',
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase'
-                  }}>
-                    {product.stock > 0 ? `${product.stock} disponibles` : 'AGOTADO'}
-                  </p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '10px' }}>
+                  <div className="price-container">
+                    {product.hasDiscount && (
+                      <>
+                        <span className="discount-tag">20% OFF</span>
+                        <span className="price-original">${product.precioOriginal}</span>
+                      </>
+                    )}
+                    <p className="price">${product.precio}</p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{ 
+                      fontSize: '0.7rem', 
+                      color: product.stock > 0 ? 'var(--accent-color)' : '#ff4444',
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase'
+                    }}>
+                      {product.stock > 0 ? `${product.stock} disponible${product.stock > 1 ? 's' : ''}` : 'AGOTADO'}
+                    </p>
+                    {product.stock > 0 && (
+                      <span className="immediate-delivery">ENTREGA INMEDIATA</span>
+                    )}
+                  </div>
                 </div>
                 <button 
                   className="add-btn" 
