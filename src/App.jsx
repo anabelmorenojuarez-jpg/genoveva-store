@@ -110,9 +110,9 @@ function App() {
           
           if (!isExcluded && parseInt(product.precio) > 0) {
             product.precioOriginal = product.precio;
-            // Aplicar 20% de descuento y redondear
+            // Aplicar 15% de descuento y redondear
             const originalPrice = parseInt(product.precio);
-            const discountedPrice = Math.floor(originalPrice * 0.8);
+            const discountedPrice = Math.floor(originalPrice * 0.85);
             product.precio = discountedPrice.toString();
             product.hasDiscount = true;
           }
@@ -233,7 +233,7 @@ function App() {
           fontSize: '0.8rem',
           letterSpacing: '1px'
         }}>
-          🔥 ¡OFERTAS DE MAYO: 20% OFF EN SELECCIONADOS! 🔥
+          🔥 ¡OFERTAS DE MAYO: 15% OFF EN SELECCIONADOS! 🔥
         </div>
       </header>
 
@@ -292,7 +292,7 @@ function App() {
                   <div className="price-container">
                     {product.hasDiscount && (
                       <>
-                        <span className="discount-tag">20% OFF</span>
+                        <span className="discount-tag">15% OFF</span>
                         <span className="price-original">${product.precioOriginal}</span>
                       </>
                     )}
