@@ -245,6 +245,26 @@ function App() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        
+        <div className="quick-filters">
+          {[
+            { label: 'Todo', term: '' },
+            { label: 'Carteras', term: 'Cartera' },
+            { label: 'Sandalias', term: 'Sandalia' },
+            { label: 'Bolsos', term: 'Crossbody' },
+            { label: 'Playeras', term: 'Playera' },
+            { label: 'Pantunflas', term: 'Pantunfla' },
+            { label: 'Set de Baño', term: 'Wicked' }
+          ].map((filter) => (
+            <button 
+              key={filter.term}
+              className={`filter-chip ${searchTerm.toLowerCase() === filter.term.toLowerCase() ? 'active' : ''}`}
+              onClick={() => setSearchTerm(filter.term)}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <motion.div layout className="products-grid">

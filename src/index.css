@@ -79,6 +79,44 @@ header {
   box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
 }
 
+.quick-filters {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 5px;
+  margin-top: 10px;
+  scrollbar-width: none; /* Firefox */
+}
+
+.quick-filters::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.filter-chip {
+  padding: 8px 18px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.filter-chip:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.filter-chip.active {
+  background: var(--accent-color);
+  color: black;
+  border-color: var(--accent-color);
+  font-weight: 700;
+}
+
 /* Grid de Productos */
 .products-grid {
   display: grid;
